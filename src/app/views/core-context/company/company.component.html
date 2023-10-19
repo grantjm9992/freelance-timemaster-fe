@@ -1,0 +1,44 @@
+
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Company</h6>
+
+        <form class="forms-sample" [formGroup]="companyFormGroup" (ngSubmit)="submitCompanyConfiguration()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" autocomplete="off" formControlName="name">
+          </div>
+          <ng-container formGroupName="configuration">
+            <div class="mb-3">
+              <input type="checkbox" class="form-check-input" formControlName="auto_approve_checks">
+              <label for="name" class="form-label">Auto-approve checks</label>
+            </div>
+            <div class="mb-3">
+              <input type="checkbox" class="form-check-input" formControlName="auto_approve_manual_checks">
+              <label for="name" class="form-label">Auto-approve manual checks</label>
+            </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Automatic check-out time</label>
+              <ngb-timepicker formControlName="automatic_check_out_time"></ngb-timepicker>
+            </div>
+          </ng-container>
+          <button type="submit" class="btn btn-primary me-2">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Check approvers</h6>
+          <div class="mb-3">
+            <label class="form-label">Check approvers</label>
+            <input type="text" class="form-control" autocomplete="off" [(ngModel)]="approvers">
+          </div>
+          <button (click)="updateApprovers()" class="btn btn-primary me-2">Update check approvers</button>
+      </div>
+    </div>
+  </div>
+</div>

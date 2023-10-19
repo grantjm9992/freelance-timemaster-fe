@@ -1,0 +1,27 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="../">Clients</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ id && id !== 'new' ? 'Edit' : 'New'}}</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Client</h6>
+
+        <form class="forms-sample" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Name" formControlName="name">
+          </div>
+          <button type="submit" class="btn btn-primary me-2">Submit</button>
+          <div class="btn btn-secondary me-2" routerLink="../">Cancel</div>
+          <div *ngIf="id && id !== 'new'" class="btn btn-danger" (click)="delete()">Delete</div>
+        </form>
+        <p class="text-danger mt-1" *ngFor="let err of error">{{ err }}</p>
+      </div>
+    </div>
+  </div>
+</div>

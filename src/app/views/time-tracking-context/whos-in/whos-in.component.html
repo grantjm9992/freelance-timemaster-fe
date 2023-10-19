@@ -1,0 +1,27 @@
+
+<div class="row">
+  <div class="col-md-6 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6>Active team-mates</h6>
+        <div class="row mt-2">
+          <div *ngFor='let item of active' class="circles mt-1 mx-1" placement="top" ngbTooltip='{{ item.name }} {{item.surname }}'>
+            {{ getInitials(item) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6>Inactive team-mates</h6>
+        <div class="row mt-2">
+          <div *ngFor='let item of inactive' class="circles mt-1 mx-1" placement="top" ngbTooltip='{{ item.name }} {{item.surname }}'>
+            {{ getInitials(item) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

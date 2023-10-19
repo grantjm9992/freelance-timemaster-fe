@@ -1,0 +1,88 @@
+<div class="row">
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-header">
+        Filters
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-lg-4">
+            <div class="form-group">
+              <label for="">From</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd"
+                       ngbDatepicker (dateSelect)="setFrom($event)" #from="ngbDatepicker">
+                <button class="input-group-text" type="button" (click)="from.toggle()">
+                  <i class="feather icon-calendar icon-md text-muted"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4">
+            <div class="form-group">
+              <label for="">To</label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" (dateSelect)="setTo($event)"
+                       ngbDatepicker #to="ngbDatepicker">
+                <button class="input-group-text" type="button" (click)="to.toggle()">
+                  <i class="feather icon-calendar icon-md text-muted"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4" style="display: flex; align-items: end;">
+            <div class="btn btn-primary" (click)="filter()">Filter</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Hours by task</h6>
+        <apx-chart
+          [series]="taskBarChartOptions.series"
+          [chart]="taskBarChartOptions.chart"
+          [colors]="taskBarChartOptions.colors"
+          [grid]="taskBarChartOptions.grid"
+          [xaxis]="taskBarChartOptions.xaxis"
+          [yaxis]="taskBarChartOptions.yaxis"
+          [plotOptions]="taskBarChartOptions.plotOptions"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Hours by project</h6>
+        <apx-chart
+          [series]="projectBarChartOptions.series"
+          [chart]="projectBarChartOptions.chart"
+          [colors]="projectBarChartOptions.colors"
+          [grid]="projectBarChartOptions.grid"
+          [xaxis]="projectBarChartOptions.xaxis"
+          [yaxis]="projectBarChartOptions.yaxis"
+          [plotOptions]="projectBarChartOptions.plotOptions"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h6 class="card-title">Hours by client</h6>
+        <apx-chart
+          [series]="clientBarChartOptions.series"
+          [chart]="clientBarChartOptions.chart"
+          [colors]="clientBarChartOptions.colors"
+          [grid]="clientBarChartOptions.grid"
+          [xaxis]="clientBarChartOptions.xaxis"
+          [yaxis]="clientBarChartOptions.yaxis"
+          [plotOptions]="clientBarChartOptions.plotOptions"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>

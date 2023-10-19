@@ -1,0 +1,7 @@
+<nav class="page-breadcrumb justify-content-between d-flex">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page">My Calendar</li>
+  </ol>
+  <div (click)="addManualCheck()" class="btn btn-primary" tabindex="-1" role="button">Add new time</div>
+</nav>
+<full-calendar #calendar [options]="calendarOptions"></full-calendar>

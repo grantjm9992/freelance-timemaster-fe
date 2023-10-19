@@ -1,0 +1,18 @@
+.overlay-box {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  color: white;
+  opacity: .8;
+  z-index: 1000;
+}
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  z-index: 100000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white;
+}

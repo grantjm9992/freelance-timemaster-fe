@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel">Add worked time</h5>
+  <button type="button" class="btn-close" (click)="activeModal.close('by: close icon')" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+  <form class="forms-sample w-100" [formGroup]="form" (ngSubmit)="submitForm()">
+    <div class="form-group mb-2">
+      <label>Start</label>
+      <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd"
+               name="start_date" ngbDatepicker formControlName="date_start" #date_start="ngbDatepicker">
+        <button class="input-group-text" type="button" (click)="date_start.toggle()">
+          <i class="feather icon-calendar icon-md text-muted"></i>
+        </button>
+      </div>
+      <div class="w-100 d-flex justify-content-around align-items-center">
+        <ngb-timepicker formControlName="time_start"></ngb-timepicker>
+        <div>
+          To
+        </div>
+        <ngb-timepicker formControlName="time_end"></ngb-timepicker>
+      </div>
+      <app-field-error-display [displayError]="isFieldValid('date_start')" errorMsg="Please select a task">
+      </app-field-error-display>
+    </div>
+    <div class="form-group mb-2">
+      <label>Task</label>
+      <ng-select [items]="tasks" bindLabel="name" formControlName="task_id" bindValue="id"></ng-select>
+      <app-field-error-display [displayError]="isFieldValid('task_id')" errorMsg="Please select a task">
+      </app-field-error-display>
+    </div>
+    <div class="d-flex">
+      <button class="btn btn-primary me-2" type="submit">Check in</button>
+    </div>
+  </form>
+</div>
+
