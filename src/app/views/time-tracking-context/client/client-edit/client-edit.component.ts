@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientApiService} from "../../../../core/services/client.api.service";
+import {AddressApiService} from "../../../../core/services/address.api.service";
 
 @Component({
   selector: 'app-client-edit',
@@ -11,29 +12,54 @@ import {ClientApiService} from "../../../../core/services/client.api.service";
 export class ClientEditComponent implements OnInit {
   error: any[] = [];
   form: FormGroup;
+  addressForm: FormGroup;
   entity: any;
+  addressEntity: any = null;
   id: string|null = null;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private apiService: ClientApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private addressApiService: AddressApiService
   ) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
+      tax_number: ['', Validators.required],
+      invoce_prefix: ['', Validators.required],
     });
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.addressEntity = this.formBuilder.group({
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      county: ['', Validators.required],
+      country: ['', Validators.required],
+      postcode: ['', Validators.required],
+      client_id: [this.id, Validators.required],
+    });
     if (this.id !== null && this.id !== 'new') {
       this.apiService.find(this.id).subscribe((response) => {
         this.entity = response.data;
         this.form.patchValue(response.data);
+        if (response.data.address !== null) {
+          this.addressEntity = response.data.address;
+          this.addressForm.patchValue(this.addressEntity);
+        }
       });
     }
   }
 
+  onSubmitAddressForm() {
+    const entity: any = {...this.addressEntity, ...this.addressForm.value};
+    if (this.addressEntity === null) {
+      this.addressApiService.create(entity).subscribe(() => {});
+    } else {
+      this.addressApiService.update(entity.id, entity).subscribe(() => {});
+    }
+  }
   onSubmit() {
     this.error = [];
     const entity: any = { ...this.entity, ...this.form.value };
