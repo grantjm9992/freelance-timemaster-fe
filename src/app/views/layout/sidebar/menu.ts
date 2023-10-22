@@ -11,6 +11,15 @@ export const MENU: MenuItem[] = [
     link: '/dashboard'
   },
   {
+    label: 'Billing',
+    isTitle: true
+  },
+  {
+    label: 'Invoices',
+    icon: 'dollar-sign',
+    link: '/billing/invoice',
+  },
+  {
     label: 'Time Tracking',
     isTitle: true
   },

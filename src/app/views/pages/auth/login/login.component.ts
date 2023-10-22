@@ -31,6 +31,9 @@ export class LoginComponent implements OnInit {
       if (response.check) {
         this.userService.setCheck(response.check);
       }
+      if (response.address) {
+        this.userService.setAddress(response.address);
+      }
       if (localStorage.getItem('isLoggedin')) {
         this.router.navigate([this.returnUrl]);
       }

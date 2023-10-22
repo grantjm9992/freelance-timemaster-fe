@@ -1,0 +1,173 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="../">Billing</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Invoice</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <label for="invoiceTitle">Invoice Title:</label>
+                            <input id="invoiceTitle" [(ngModel)]="invoiceTitle" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <label for="clientSelector">Client:</label>
+                            <ng-select
+                                    id="clientSelector" [(ngModel)]="selectedClient"
+                                    [items]="clients"
+                                    bindValue="id"
+                                    bindLabel="name"
+                                    (change)="updateClientAddress()"
+                            ></ng-select>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group" *ngIf="selectedClient">
+                            <label for="projectSelector">Project:</label>
+                            <ng-select
+                                    id="projectSelector" [(ngModel)]="selectedProject"
+                                    [items]="projects"
+                                    bindValue="id"
+                                    bindLabel="name"
+                            ></ng-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="container-fluid d-flex justify-content-between">
+                    <div class="col-lg-3 ps-0">
+                        <h5 class="mt-5 mb-2 text-muted">Invoice from :</h5>
+                        <ng-container *ngIf="user">
+                            <p class="mt-1 mb-1"><b>{{user.name + ' ' + user.surname}}</b></p>
+                        </ng-container>
+                        <p>{{ senderAddress }}</p>
+                        <h5 class="mt-5 mb-2 text-muted">Invoice to :</h5>
+                        <ng-container *ngIf="client">
+                            <p class="mt-1 mb-1"><b>{{ client.name }}</b></p>
+                        </ng-container>
+                        <p>{{ clientAddress }}</p>
+                    </div>
+                    <div class="col-lg-3 pe-0">
+                        <h4 class="fw-bold text-uppercase text-end mt-4 mb-2">invoice</h4>
+                        <h6 class="text-end mb-5 pb-4"># {{ invoiceNumber }}</h6>
+                        <p class="text-end mb-1">Balance Due</p>
+                        <h4 class="text-end fw-normal">{{ getCurrencySymbol() }} {{ totalAmount }}</h4>
+                        <h6 class="mb-0 mt-3 text-muted">Invoice Date:</h6>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd"
+                                   name="invoiceDate" ngbDatepicker #invoiceDate="ngbDatepicker">
+                            <button class="input-group-text" type="button" (click)="invoiceDate.toggle()">
+                                <i class="feather icon-calendar icon-md text-muted"></i>
+                            </button>
+                        </div>
+                        <h6 class="mb-0 mt-3 text-muted">Due Date:</h6>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd"
+                                   name="dueDate" ngbDatepicker #dueDate="ngbDatepicker">
+                            <button class="input-group-text" type="button" (click)="dueDate.toggle()">
+                                <i class="feather icon-calendar icon-md text-muted"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+                    <div class="table-responsive w-100">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="w-40" style="width: 50%">Description</th>
+                                <th class="w-10 text-end" style="width: 10%">Quantity</th>
+                                <th class="w-20 text-end" style="width: 20%">Unit cost</th>
+                                <th class="w-20 text-end" style="width: 20%">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-end" *ngFor="let item of items; let i = index">
+                                <td class="text-start">{{ i + 1 }}</td>
+                                <td class="text-start">
+                                    <input [(ngModel)]="item.description" type="text" class="custom-input w-100">
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="item.quantity" type="number" class="custom-input w-100 text-end">
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="item.unitCost" type="number" class="custom-input w-100 text-end">
+                                </td>
+                                <td>{{ item.quantity * item.unitCost }}</td>
+                                <td *ngIf="i > 0">
+                                    <button (click)="removeItem(i)" class="btn btn-danger btn-sm">Remove</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button (click)="addItem()" class="btn btn-success">Add Item</button>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5 w-100">
+                    <div class="row">
+                        <div class="col-md-6 ms-auto">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>Sub Total</td>
+                                        <td class="text-end">{{ getCurrencySymbol() }} {{ subTotal() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Tax Rate (%): <input style="width: 50px" [(ngModel)]="taxRate" type="number" class="custom-input text-end">
+                                        </td>
+                                        <td class="text-end">{{ getCurrencySymbol() }} {{ calculateTax() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-bold-800">Total</td>
+                                        <td class="text-bold-800 text-end">{{ getCurrencySymbol() }} {{ calculateTotal() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Payment Made</td>
+                                        <td><input [(ngModel)]="paymentMade" type="number" class="custom-input w-100 text-end"></td>
+                                    </tr>
+                                    <tr class="bg-light">
+                                        <td class="text-bold-800">Balance Due</td>
+                                        <td class="text-bold-800 text-end">{{ getCurrencySymbol() }} {{ calculateBalanceDue() }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Currency</td>
+                                        <td style="display: flex;place-content: flex-end;">
+                                            <select [(ngModel)]="selectedCurrency" class="custom-input">
+                                                <option value="USD">USD</option>
+                                                <option value="EUR">EUR</option>
+                                                <option value="GBP">GBP</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid w-100">
+                    <div (click)="saveInvoice()" class="btn btn-primary float-end mt-4 ms-2">Save Invoice</div>
+                    <div (click)="deleteInvoice()" class="btn btn-primary float-end mt-4 ms-2">Delete Invoice</div>
+                    <div (click)="downloadInvoice()" class="btn btn-outline-primary float-end mt-4">Download</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

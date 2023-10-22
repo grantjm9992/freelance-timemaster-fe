@@ -36,6 +36,10 @@ const routes: Routes = [
         path: 'hr',
         loadChildren: () => import('./views/hr-context/hr-context.module').then(m => m.HrContextModule)
       },
+      {
+        path: 'billing',
+        loadChildren: () => import('./views/billing-context/billing-context.module').then(m => m.BillingContextModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ]
   },

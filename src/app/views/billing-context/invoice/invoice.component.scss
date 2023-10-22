@@ -1,0 +1,11 @@
+.custom-input {
+  border: 1px solid #ccc; /* Define a subtle border */
+  border-radius: 5px; /* Add a slight border radius for softer edges */
+  padding: 5px; /* Add some padding for spacing */
+  outline: none; /* Remove the default input outline */
+  transition: border 0.3s ease; /* Add a smooth transition effect */
+}
+
+.custom-input:focus {
+  border: 1px solid #4CAF50; /* Define a border color on focus */
+}

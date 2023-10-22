@@ -32,13 +32,14 @@ export class ClientEditComponent implements OnInit {
       invoce_prefix: ['', Validators.required],
     });
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.addressEntity = this.formBuilder.group({
+    this.addressForm = this.formBuilder.group({
       address: ['', Validators.required],
       city: ['', Validators.required],
       county: ['', Validators.required],
       country: ['', Validators.required],
       postcode: ['', Validators.required],
-      client_id: [this.id, Validators.required],
+      resource_id: [this.id, Validators.required],
+      type: 'CLIENT',
     });
     if (this.id !== null && this.id !== 'new') {
       this.apiService.find(this.id).subscribe((response) => {

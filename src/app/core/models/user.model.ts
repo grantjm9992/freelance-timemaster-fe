@@ -6,4 +6,6 @@ export class User {
   surname: string;
   title: string;
   user_role: string;
+  address: any;
+  check: any;
 }

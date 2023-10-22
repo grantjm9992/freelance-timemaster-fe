@@ -19,6 +19,7 @@ export class UserService {
   }
   private userSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   private checkSubject: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
+  private addressSubject: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
 
   setUserEntity(user: any) {
     localStorage.setItem('user', user);
@@ -39,5 +40,13 @@ export class UserService {
 
   getCheck(): Observable<any> {
     return this.checkSubject.asObservable();
+  }
+
+  setAddress(address: any): void {
+    this.addressSubject.next(address);
+  }
+
+  getAddress(): Observable<any> {
+    return this.addressSubject.asObservable();
   }
 }

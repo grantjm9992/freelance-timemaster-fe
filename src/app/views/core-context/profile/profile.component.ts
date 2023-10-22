@@ -9,6 +9,7 @@ import {UserApiService} from "../../../core/services/user.api.service";
 import {SubscriptionApiService} from "../../../core/services/subscription.api.service";
 import {CompanyApiService} from "../../../core/services/company.api.service";
 import {CompanyResponse} from "../../../core/models/company.model";
+import {AddressApiService} from "../../../core/services/address.api.service";
 
 @Component({
   selector: 'app-profile',
@@ -27,30 +28,38 @@ export class ProfileComponent implements OnInit {
   error: any[] = [];
   formGroup: FormGroup;
   companyFormGroup: FormGroup;
+  addressForm: FormGroup;
+  addressEntity: any;
 
   constructor(
     private checkReportApiService: CheckReportApiService,
     private userService: UserService,
     private formBuilder: FormBuilder,
     private userApiService: UserApiService,
-    private subscriptionApiService: SubscriptionApiService,
-    private companyApiService: CompanyApiService
+    private addressApiService: AddressApiService
   ) {
   }
 
   ngOnInit(): void {
-    this.subscriptionApiService.getAll().subscribe(result => {
-      this.subscription = result.data;
-    });
-    this.checkReportApiService.getAll().subscribe((result: MyHoursReportModel) => {
-      this.myHoursReport = result;
-    });
     this.userService.getUserEntity().subscribe((user) => {
       if (user) {
         this.user = user;
         this.formGroup = this.formBuilder.group({
           name: [user.name, Validators.required],
           surname: [user.surname, Validators.required],
+        });
+        this.addressForm = this.formBuilder.group({
+          address: ['', Validators.required],
+          city: ['', Validators.required],
+          county: ['', Validators.required],
+          country: ['', Validators.required],
+          postcode: ['', Validators.required],
+          resource_id: [this.user.company_id, Validators.required],
+          type: 'COMPANY',
+        });
+        this.userService.getAddress().subscribe((address) => {
+          console.log(address);
+          this.addressForm.patchValue(address);
         });
         this.loading = false;
       }
@@ -70,6 +79,15 @@ export class ProfileComponent implements OnInit {
         text: "Updated your details successfully"
       });
     });
+  }
+
+  onSubmitAddressForm() {
+    const entity: any = {...this.addressEntity, ...this.addressForm.value};
+    if (!this.addressEntity) {
+      this.addressApiService.create(entity).subscribe(() => {});
+    } else {
+      this.addressApiService.update(entity.id, entity).subscribe(() => {});
+    }
   }
 
   updatePassword(): void {
