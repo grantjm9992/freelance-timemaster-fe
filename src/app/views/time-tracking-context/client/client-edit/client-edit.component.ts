@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ClientApiService} from "../../../../core/services/client.api.service";
 import {AddressApiService} from "../../../../core/services/address.api.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-client-edit',
@@ -68,6 +69,30 @@ export class ClientEditComponent implements OnInit {
       this.apiService.create(entity).subscribe(() => {
         this.router.navigate(['/time-tracking/client']);
       }, error => {
+        if (error.status === 'error_subscription_needed') {
+          Swal.fire({
+            title: 'Subscription error',
+            text: 'Without a subscription, you are limited to one client. Please upgrade your account to add more clients.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sign me up!',
+            cancelButtonText: 'Cancel',
+          }).then(() => {
+            this.router.navigateByUrl('/general/pricing');
+          });
+        }
+        if (error.status === 'error_subscription_inactive') {
+          Swal.fire({
+            title: 'Subscription error',
+            text: 'Without a subscription, you are limited to one client. Please upgrade your account to add more clients.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sign me up!',
+            cancelButtonText: 'Cancel',
+          }).then(() => {
+            this.router.navigateByUrl('/general/pricing');
+          });
+        }
         if (error.errors) {
           for (let key in error.errors) {
             error.errors[key].forEach((err: string) => {

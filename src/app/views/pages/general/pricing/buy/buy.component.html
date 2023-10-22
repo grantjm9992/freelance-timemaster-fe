@@ -11,15 +11,9 @@
     <div class="card">
       <div class="card-body">
         <h3 class="text-center mb-3 mt-4">Payment</h3>
-        <p class="text-muted text-center mb-4 pb-2">Choose the number of users required today</p>
         <div class="container">
           <div class="d-flex">
             <form novalidate (ngSubmit)="createToken()" [formGroup]="stripeTest">
-              <div class="mb-3">
-                <label class="form-label">Number of users</label>
-                <ng-select (change)="getPrice()" formControlName="number_of_employees" [items]="numberOfEmployees" bindLabel="name" bindValue="id" >
-                </ng-select>
-              </div>
               <h1>
                 {{ price }}€ / m
               </h1>

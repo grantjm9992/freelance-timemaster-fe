@@ -20,6 +20,30 @@ export const MENU: MenuItem[] = [
     link: '/billing/invoice',
   },
   {
+    label: 'Admin',
+    profiles: ['company_admin'],
+    icon: 'settings',
+    subItems: [/*
+      {
+        label: 'Users',
+        link: '/core/user',
+      },*/
+      {
+        label: 'Client',
+        link: '/time-tracking/client',
+      },
+      {
+        label: 'Project',
+        link: '/time-tracking/project',
+      },
+      {
+        label: 'Task',
+        link: '/time-tracking/task',
+      },
+    ]
+  },
+    /*
+  {
     label: 'Time Tracking',
     isTitle: true
   },
@@ -39,29 +63,6 @@ export const MENU: MenuItem[] = [
     link: '/time-tracking/report',
   },
   {
-    label: 'Admin',
-    profiles: ['company_admin'],
-    icon: 'settings',
-    subItems: [
-      {
-        label: 'Users',
-        link: '/core/user',
-      },
-      {
-        label: 'Client',
-        link: '/time-tracking/client',
-      },
-      {
-        label: 'Project',
-        link: '/time-tracking/project',
-      },
-      {
-        label: 'Task',
-        link: '/time-tracking/task',
-      },
-    ]
-  },
-  {
     label: 'HR',
     isTitle: true
   },
@@ -75,5 +76,5 @@ export const MENU: MenuItem[] = [
         link: '/hr/absence-type',
       },
     ]
-  }
+  }*/
 ];

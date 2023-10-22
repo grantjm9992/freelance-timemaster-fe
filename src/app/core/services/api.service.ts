@@ -36,7 +36,6 @@ export class ApiService {
         return throwError(error.error);
       }
     }
-    console.log();
     if (error.error) {
       if (error.error.error) {
         Swal.fire({

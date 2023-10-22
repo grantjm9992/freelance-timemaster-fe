@@ -20,32 +20,8 @@ import Swal from "sweetalert2";
 })
 export class BuyComponent implements OnInit {
 
-  numberOfEmployees = [{
-    name: '1 - 10 ',
-    id: 10,
-    price: {
-      advanced: 30,
-      basic: 20
-    }
-  }, {
-    name: '11 - 20 ',
-    id: 20,
-    price: {
-      advanced: 60,
-      basic: 40
-    }
-  }, {
-    name: '21 - 50 ',
-    id: 50,
-    price: {
-      advanced: 150,
-      basic: 100
-    }
-  }]
-  numberOfUsers: number = 10;
-  type: any;
   token: any;
-  price: any;
+  price: any = 4;
 
   @ViewChild(StripeCardNumberComponent) cardNumberComponent: StripeCardNumberComponent;
   @ViewChild(StripeCardExpiryComponent) cardExpiryComponent: StripeCardExpiryComponent;
@@ -81,7 +57,6 @@ export class BuyComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.type = this.activatedRoute.snapshot.paramMap.get('type');
     this.stripeTest = this.formBuilder.group({
       name: ['', [Validators.required]],
       number_of_employees: [10, Validators.required],
@@ -99,9 +74,7 @@ export class BuyComponent implements OnInit {
           this.token = result.token.id;
           this.subscriptionApiService.create({
             stripe_token: this.token,
-            types: ['time_tracking'],
-            type: this.type,
-            number_of_users: this.numberOfUsers,
+            types: ['time_tracking', 'billing'],
           }).subscribe(res => {
             Swal.fire({
               icon: 'success',
@@ -119,7 +92,6 @@ export class BuyComponent implements OnInit {
             });
           })
         } else if (result.error) {
-          // Error creating the token
           console.log(result.error.message);
           Swal.fire({
             icon: "error",
@@ -137,11 +109,6 @@ export class BuyComponent implements OnInit {
   }
 
   getPrice() {
-    this.price = this.price + 20;
-    let selected = this.numberOfEmployees.filter((r) => {
-      return r.id === this.stripeTest.get('number_of_employees')?.value;
-    });
-    let s = selected[0];
-    this.price = this.type === 'basic' ? s.price.basic : s.price.advanced;
+    this.price = 4;
   }
 }
