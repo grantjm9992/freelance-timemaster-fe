@@ -58,7 +58,6 @@ export class ProfileComponent implements OnInit {
           type: 'COMPANY',
         });
         this.userService.getAddress().subscribe((address) => {
-          console.log(address);
           this.addressForm.patchValue(address);
         });
         this.loading = false;
@@ -84,9 +83,23 @@ export class ProfileComponent implements OnInit {
   onSubmitAddressForm() {
     const entity: any = {...this.addressEntity, ...this.addressForm.value};
     if (!this.addressEntity) {
-      this.addressApiService.create(entity).subscribe(() => {});
+      this.addressApiService.create(entity).subscribe(() => {
+        this.userService.setAddress(this.addressEntity);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes',
+          text: 'Address updated successfully',
+        });
+      });
     } else {
-      this.addressApiService.update(entity.id, entity).subscribe(() => {});
+      this.addressApiService.update(entity.id, entity).subscribe(() => {
+        this.userService.setAddress(this.addressEntity);
+        Swal.fire({
+          icon: 'success',
+          title: 'Succes',
+          text: 'Address updated successfully',
+        });
+      });
     }
   }
 
