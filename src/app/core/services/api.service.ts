@@ -10,7 +10,7 @@ import Swal from "sweetalert2";
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = environment.baseApiUrl;
+  protected baseUrl = environment.baseApiUrl;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json'

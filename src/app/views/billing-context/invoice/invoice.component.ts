@@ -62,8 +62,8 @@ export class InvoiceComponent implements OnInit {
               this.invoiceNumber = response.description;
               this.selectedClient = response.client_id;
               this.selectedProject = response.project_id;
-              this.clientAddress = response.recipient;
-              this.senderAddress = response.payer;
+              this.clientAddress = response.payer;
+              this.senderAddress = response.recipient;
               this.items = response.items;
               this.selectedCurrency = response.currency;
               this.taxRate = parseFloat(response.tax_rate);
@@ -159,7 +159,7 @@ export class InvoiceComponent implements OnInit {
       recipient: this.senderAddress, // Recipient address
       payer: this.clientAddress, // Payer (sender) address
       items: this.items, // Array of invoice items
-      total: this.calculateTotal().toString(), // Total amount
+      total: this.subTotal().toString(), // Total amount
       description: this.invoiceNumber,
       currency: this.selectedCurrency, // Currency
       tax_rate: this.taxRate.toString(), // Tax rate
@@ -192,9 +192,9 @@ export class InvoiceComponent implements OnInit {
   }
 
   downloadInvoice() {
-    this.invoiceApiService.download('').subscribe(() => {
-
-    });
+    const url = this.invoiceApiService.getDownloadURL(this.id);
+    console.log(url);
+    window.open(url, '_blank')
   }
 
   parseDate(dateString: string): NgbDateStruct {
