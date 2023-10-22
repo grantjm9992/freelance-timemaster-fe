@@ -3,7 +3,8 @@ import {InvoiceApiService} from "../../../core/services/invoice.api.service";
 import {ClientApiService} from "../../../core/services/client.api.service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "../../../core/services/user.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-invoice',
@@ -34,7 +35,8 @@ export class InvoiceComponent implements OnInit {
       private invoiceApiService: InvoiceApiService,
       private clientApiService: ClientApiService,
       private userService: UserService,
-      private activatedRoute: ActivatedRoute
+      private activatedRoute: ActivatedRoute,
+      private router: Router
   ) {
     this.invoiceDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
     this.dueDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 7 };
@@ -180,16 +182,38 @@ export class InvoiceComponent implements OnInit {
   }
 
   saveInvoice() {
-    this.invoiceApiService.create(this.createInvoiceObject()).subscribe(() => {
+    if (this.id === 'new') {
+      this.invoiceApiService.create(this.createInvoiceObject()).subscribe(() => {
+        this.router.navigate(['/billing/invoice']);
+      });
+    } else {
+      this.invoiceApiService.update(this.id, this.createInvoiceObject()).subscribe(() => {
+        this.router.navigate(['/billing/invoice']);
+      });
+    }
+  }
 
+  confirmDeleteInvoice() {
+    this.invoiceApiService.remove(`${this.id}`).subscribe(() => {
+      this.router.navigate(['/billing/invoice']);
     });
   }
 
-  deleteInvoice() {
-    this.invoiceApiService.remove('').subscribe(() => {
-
+  async deleteInvoice() {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You are about to delete this invoice. This action cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
     });
+
+    if (result.isConfirmed) {
+      this.confirmDeleteInvoice(); // Call your deleteInvoice method here
+    }
   }
+
 
   downloadInvoice() {
     const url = this.invoiceApiService.getDownloadURL(this.id);
