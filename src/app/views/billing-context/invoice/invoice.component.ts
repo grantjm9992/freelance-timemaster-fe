@@ -125,6 +125,11 @@ export class InvoiceComponent implements OnInit {
   }
 
   updateClientAddress() {
+    if (this.selectedClient === null) {
+      this.client = null;
+      this.clientAddress = '';
+      return;
+    }
     this.clientApiService.find(this.selectedClient).subscribe((res) => {
       this.client = res.data;
       this.projects = res.data.projects;

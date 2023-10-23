@@ -69,16 +69,18 @@
                         <h6 class="mb-0 mt-3 text-muted">Invoice Date:</h6>
                         <div class="input-group">
                             <input class="form-control" placeholder="yyyy-mm-dd"
-                                   name="invoiceDate" ngbDatepicker #invoiceDate="ngbDatepicker">
-                            <button class="input-group-text" type="button" (click)="invoiceDate.toggle()">
+                                   [(ngModel)]="invoiceDate"
+                                   name="invoiceDate" ngbDatepicker #invoiceDateElement="ngbDatepicker">
+                            <button class="input-group-text" type="button" (click)="invoiceDateElement.toggle()">
                                 <i class="feather icon-calendar icon-md text-muted"></i>
                             </button>
                         </div>
                         <h6 class="mb-0 mt-3 text-muted">Due Date:</h6>
                         <div class="input-group">
                             <input class="form-control" placeholder="yyyy-mm-dd"
-                                   name="dueDate" ngbDatepicker #dueDate="ngbDatepicker">
-                            <button class="input-group-text" type="button" (click)="dueDate.toggle()">
+                                   [(ngModel)]="dueDate"
+                                   name="dueDate" ngbDatepicker #dueDateElement="ngbDatepicker">
+                            <button class="input-group-text" type="button" (click)="dueDateElement.toggle()">
                                 <i class="feather icon-calendar icon-md text-muted"></i>
                             </button>
                         </div>

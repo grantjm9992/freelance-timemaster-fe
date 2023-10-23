@@ -7,40 +7,49 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div class="card">
-      <div class="card-body">
         <h3 class="text-center mb-3 mt-4">Payment</h3>
-        <div class="container">
-          <div class="d-flex">
-            <form novalidate (ngSubmit)="createToken()" [formGroup]="stripeTest">
-              <h1>
-                {{ price }}€ / m
-              </h1>
-              <div
-                ngxStripeCardGroup
-                [formGroup]="stripeTest"
-                [elementsOptions]="elementsOptions"
-              >
-                <div class="mb-3">
-                  <label for="" class="form-label">Card number</label>
-                  <ngx-stripe-card-number [options]="cardOptions"></ngx-stripe-card-number>
+
+        <div class="row">
+          <div class="col-md-3 stretch-card grid-margin grid-margin-md-0">
+          </div>
+          <div class="col-md-6 stretch-card grid-margin grid-margin-md-0">
+            <div class="card">
+              <div class="card-body">
+                <div class="container">
+                  <div class="w-100">
+                    <form novalidate (ngSubmit)="createToken()" [formGroup]="stripeTest">
+                      <h1>
+                        {{ price }}€ / m
+                      </h1>
+                      <div
+                              ngxStripeCardGroup
+                              [formGroup]="stripeTest"
+                              [elementsOptions]="elementsOptions"
+                      >
+                        <div class="mb-3">
+                          <label for="" class="form-label">Card number</label>
+                          <ngx-stripe-card-number [options]="cardOptions"></ngx-stripe-card-number>
+                        </div>
+                        <div class="mb-3">
+                          <label for="" class="form-label">Expiry date</label>
+                          <ngx-stripe-card-expiry [options]="cardOptions"></ngx-stripe-card-expiry>
+                        </div>
+                        <div class="mb-3">
+                          <label for="" class="form-label">CVC</label>
+                          <ngx-stripe-card-cvc [options]="cardOptions"></ngx-stripe-card-cvc>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4">
+                          PAY
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
-                <div class="mb-3">
-                  <label for="" class="form-label">Expiry date</label>
-                  <ngx-stripe-card-expiry [options]="cardOptions"></ngx-stripe-card-expiry>
-                </div>
-                <div class="mb-3">
-                  <label for="" class="form-label">CVC</label>
-                  <ngx-stripe-card-cvc [options]="cardOptions"></ngx-stripe-card-cvc>
-                </div>
-                <button type="submit" class="btn btn-primary mt-4">
-                  PAY
-                </button>
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="col-md-3 stretch-card grid-margin grid-margin-md-0">
           </div>
         </div>
-      </div>
-    </div>
   </div>
 </div>
