@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import {InvoiceApiService} from "../../../core/services/invoice.api.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -42,7 +43,15 @@ export class DashboardComponent implements OnInit {
    */
   currentDate: NgbDateStruct;
 
-  constructor(private calendar: NgbCalendar) {}
+  invoices: any = 0;
+  pending: any = 0;
+  total: any = 0;
+
+
+  constructor(
+      private calendar: NgbCalendar,
+      private invoiceApiService: InvoiceApiService
+  ) {}
 
   ngOnInit(): void {
     this.currentDate = this.calendar.getToday();
@@ -58,6 +67,12 @@ export class DashboardComponent implements OnInit {
     if (document.querySelector('html')?.getAttribute('dir') === 'rtl') {
       this.addRtlOptions();
     }
+
+    this.invoiceApiService.getStatistics().subscribe(res => {
+      this.invoices = res.count;
+      this.pending = res.pending;
+      this.total = res.total;
+    });
 
   }
 

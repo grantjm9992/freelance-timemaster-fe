@@ -10,6 +10,10 @@ export class InvoiceApiService extends AbstractApiService {
     return "/invoices";
   }
 
+  getStatistics(): Observable<any> {
+    return this.get(`${this.getUrl()}/statistics`);
+  }
+
   getDownloadURL(id: string): string {
     return `${this.baseUrl}${this.getUrl()}/${id}/download`;
   }
