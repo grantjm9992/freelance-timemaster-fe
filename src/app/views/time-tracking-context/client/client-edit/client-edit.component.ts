@@ -57,17 +57,29 @@ export class ClientEditComponent implements OnInit {
   onSubmitAddressForm() {
     const entity: any = {...this.addressEntity, ...this.addressForm.value};
     if (this.addressEntity === null) {
-      this.addressApiService.create(entity).subscribe(() => {});
+      this.addressApiService.create(entity).subscribe(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Address updated successfully',
+        });
+      });
     } else {
-      this.addressApiService.update(entity.id, entity).subscribe(() => {});
+      this.addressApiService.update(entity.id, entity).subscribe(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Address updated successfully',
+        });
+      });
     }
   }
   onSubmit() {
     this.error = [];
     const entity: any = { ...this.entity, ...this.form.value };
     if (this.id === 'new') {
-      this.apiService.create(entity).subscribe(() => {
-        this.router.navigate(['/time-tracking/client']);
+      this.apiService.create(entity).subscribe((res) => {
+        this.router.navigate([`/time-tracking/client/${res.data.id}`]);
       }, error => {
         if (error.status === 'error_subscription_needed') {
           Swal.fire({

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseApiUrl: 'https://api.timemaster.es/api'
+  baseApiUrl: 'https://api.profitplanner.es/api'
 };

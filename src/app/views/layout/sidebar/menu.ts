@@ -21,13 +21,28 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Admin',
+    isTitle: true
+  },
+  {
+    label: 'Client',
+    icon: 'briefcase',
+    link: '/time-tracking/client',
+  },
+  {
+    label: 'Project',
+    icon: 'trello',
+    link: '/time-tracking/project',
+  },
+   /*
+  {
+    label: 'Admin',
     profiles: ['company_admin'],
     icon: 'settings',
-    subItems: [/*
+    subItems: [
       {
         label: 'Users',
         link: '/core/user',
-      },*/
+      },
       {
         label: 'Client',
         link: '/time-tracking/client',
@@ -41,7 +56,7 @@ export const MENU: MenuItem[] = [
         link: '/time-tracking/task',
       },
     ]
-  },
+  },*/
     /*
   {
     label: 'Time Tracking',

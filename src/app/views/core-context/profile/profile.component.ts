@@ -84,19 +84,19 @@ export class ProfileComponent implements OnInit {
     const entity: any = {...this.addressEntity, ...this.addressForm.value};
     if (!this.addressEntity) {
       this.addressApiService.create(entity).subscribe(() => {
-        this.userService.setAddress(this.addressEntity);
+        this.userService.setAddress(entity);
         Swal.fire({
           icon: 'success',
-          title: 'Succes',
+          title: 'Success',
           text: 'Address updated successfully',
         });
       });
     } else {
       this.addressApiService.update(entity.id, entity).subscribe(() => {
-        this.userService.setAddress(this.addressEntity);
+        this.userService.setAddress(entity);
         Swal.fire({
           icon: 'success',
-          title: 'Succes',
+          title: 'Success',
           text: 'Address updated successfully',
         });
       });
