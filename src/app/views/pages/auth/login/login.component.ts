@@ -33,6 +33,8 @@ export class LoginComponent implements OnInit {
       }
       if (response.address) {
         this.userService.setAddress(response.address);
+      } else {
+        this.returnUrl = '/core/profile';
       }
       if (localStorage.getItem('isLoggedin')) {
         this.router.navigate([this.returnUrl]);
