@@ -48,42 +48,43 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-body">
-                <div class="container-fluid d-flex justify-content-between">
-
-                    <div class="col-lg-3 ps-0">
-                        <h5 class="mt-5 mb-2 text-muted">Invoice from :</h5>
-                        <ng-container *ngIf="user">
-                            <p class="mt-1 mb-1"><b>{{user.name + ' ' + user.surname}}</b></p>
-                        </ng-container>
-                        <p>{{ senderAddress }}</p>
-                        <h5 class="mt-5 mb-2 text-muted">Invoice to :</h5>
-                        <ng-container *ngIf="client">
-                            <p class="mt-1 mb-1"><b>{{ client.name }}</b></p>
-                        </ng-container>
-                        <p>{{ clientAddress }}</p>
-                    </div>
-                    <div class="col-lg-3 pe-0">
-                        <h4 class="fw-bold text-uppercase text-end mt-4 mb-2">invoice</h4>
-                        <h6 class="text-end mb-5 pb-4"># {{ invoiceNumber }}</h6>
-                        <p class="text-end mb-1">Balance Due</p>
-                        <h4 class="text-end fw-normal">{{ getCurrencySymbol() }} {{ totalAmount }}</h4>
-                        <h6 class="mb-0 mt-3 text-muted">Invoice Date:</h6>
-                        <div class="input-group">
-                            <input class="form-control" placeholder="yyyy-mm-dd"
-                                   [(ngModel)]="invoiceDate"
-                                   name="invoiceDate" ngbDatepicker #invoiceDateElement="ngbDatepicker">
-                            <button class="input-group-text" type="button" (click)="invoiceDateElement.toggle()">
-                                <i class="feather icon-calendar icon-md text-muted"></i>
-                            </button>
+                <div class="container-fluid">
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-lg-3 ps-0">
+                            <h5 class="mt-5 mb-2 text-muted">Invoice from :</h5>
+                            <ng-container *ngIf="user">
+                                <p class="mt-1 mb-1"><b>{{user.name + ' ' + user.surname}}</b></p>
+                            </ng-container>
+                            <p>{{ senderAddress }}</p>
+                            <h5 class="mt-5 mb-2 text-muted">Invoice to :</h5>
+                            <ng-container *ngIf="client">
+                                <p class="mt-1 mb-1"><b>{{ client.name }}</b></p>
+                            </ng-container>
+                            <p>{{ clientAddress }}</p>
                         </div>
-                        <h6 class="mb-0 mt-3 text-muted">Due Date:</h6>
-                        <div class="input-group">
-                            <input class="form-control" placeholder="yyyy-mm-dd"
-                                   [(ngModel)]="dueDate"
-                                   name="dueDate" ngbDatepicker #dueDateElement="ngbDatepicker">
-                            <button class="input-group-text" type="button" (click)="dueDateElement.toggle()">
-                                <i class="feather icon-calendar icon-md text-muted"></i>
-                            </button>
+                        <div class="col-lg-3 pe-0">
+                            <h4 class="fw-bold text-uppercase text-end mt-4 mb-2">invoice</h4>
+                            <h6 class="text-end mb-5 pb-4"># {{ invoiceNumber }}</h6>
+                            <p class="text-end mb-1">Balance Due</p>
+                            <h4 class="text-end fw-normal">{{ getCurrencySymbol() }} {{ totalAmount }}</h4>
+                            <h6 class="mb-0 mt-3 text-muted">Invoice Date:</h6>
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       [(ngModel)]="invoiceDate"
+                                       name="invoiceDate" ngbDatepicker #invoiceDateElement="ngbDatepicker">
+                                <button class="input-group-text" type="button" (click)="invoiceDateElement.toggle()">
+                                    <i class="feather icon-calendar icon-md text-muted"></i>
+                                </button>
+                            </div>
+                            <h6 class="mb-0 mt-3 text-muted">Due Date:</h6>
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd"
+                                       [(ngModel)]="dueDate"
+                                       name="dueDate" ngbDatepicker #dueDateElement="ngbDatepicker">
+                                <button class="input-group-text" type="button" (click)="dueDateElement.toggle()">
+                                    <i class="feather icon-calendar icon-md text-muted"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
