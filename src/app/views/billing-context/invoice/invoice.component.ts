@@ -13,6 +13,7 @@ import Swal from "sweetalert2";
 })
 export class InvoiceComponent implements OnInit {
   id: any = null;
+  status: string = 'PENDING';
   senderAddress = '';
   clientAddress = '';
   invoiceNumber = '';
@@ -43,7 +44,7 @@ export class InvoiceComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.clientApiService.getAll().subscribe((res) => {
       this.clients = res.data;
     });
@@ -73,6 +74,7 @@ export class InvoiceComponent implements OnInit {
               this.invoiceTitle = response.title;
               this.invoiceDate = this.parseDate(response.create_date);
               this.dueDate = this.parseDate(response.due_date);
+              this.status = response.status;
               this.updateClientAddress();
             }
           });
@@ -81,11 +83,11 @@ export class InvoiceComponent implements OnInit {
     });
   }
 
-  addItem() {
+  addItem(): void {
     this.items.push({ description: '', quantity: 1, unitCost: 0 });
   }
 
-  removeItem(index: number) {
+  removeItem(index: number): void {
     this.items.splice(index, 1);
   }
 
@@ -97,7 +99,6 @@ export class InvoiceComponent implements OnInit {
     return this.roundToTwoDecimalPlaces((this.taxRate / 100) * this.subTotal());
   }
 
-  // Function to round a number to two decimal places
   roundToTwoDecimalPlaces(value: number): number {
     return parseFloat(value.toFixed(2));
   }
@@ -124,7 +125,7 @@ export class InvoiceComponent implements OnInit {
     return currencySymbols[this.selectedCurrency] || '';
   }
 
-  updateClientAddress() {
+  updateClientAddress(): void {
     if (this.selectedClient === null) {
       this.client = null;
       this.clientAddress = '';
@@ -154,7 +155,7 @@ export class InvoiceComponent implements OnInit {
     return result;
   }
 
-  parseAddress(client: any) {
+  parseAddress(client: any): string {
     return `${client.address.address}, ${client.address.city}, ${client.address.county}, ${client.address.country}, ${client.address.postcode}, ${client.tax_number}`;
   }
 
@@ -162,7 +163,7 @@ export class InvoiceComponent implements OnInit {
     return {
       client_id: this.selectedClient, // Client ID
       project_id: this.selectedProject, // Project ID
-      status: 'PENDING', // Status (you can add this if needed)
+      status: this.status, // Status (you can add this if needed)
       recipient: this.senderAddress, // Recipient address
       payer: this.clientAddress, // Payer (sender) address
       items: this.items, // Array of invoice items
@@ -186,7 +187,7 @@ export class InvoiceComponent implements OnInit {
     return '';
   }
 
-  saveInvoice() {
+  saveInvoice(): void {
     if (this.id === 'new') {
       this.invoiceApiService.create(this.createInvoiceObject()).subscribe(() => {
         this.router.navigate(['/billing/invoice']);
@@ -198,13 +199,13 @@ export class InvoiceComponent implements OnInit {
     }
   }
 
-  confirmDeleteInvoice() {
+  confirmDeleteInvoice(): void {
     this.invoiceApiService.remove(`${this.id}`).subscribe(() => {
       this.router.navigate(['/billing/invoice']);
     });
   }
 
-  async deleteInvoice() {
+  async deleteInvoice(): Promise<any> {
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: 'You are about to delete this invoice. This action cannot be undone.',
@@ -220,7 +221,7 @@ export class InvoiceComponent implements OnInit {
   }
 
 
-  downloadInvoice() {
+  downloadInvoice(): void {
     const url = this.invoiceApiService.getDownloadURL(this.id);
     console.log(url);
     window.open(url, '_blank')
@@ -229,5 +230,13 @@ export class InvoiceComponent implements OnInit {
   parseDate(dateString: string): NgbDateStruct {
     const dateParts = dateString.split('-');
     return { year: parseInt(dateParts[0]), month: parseInt(dateParts[1]), day: parseInt(dateParts[2]) };
+  }
+
+  updatePaymentMade(): void {
+    if (this.status === 'PAID') {
+      this.paymentMade = this.calculateTotal();
+    } else {
+      this.paymentMade = 0;
+    }
   }
 }

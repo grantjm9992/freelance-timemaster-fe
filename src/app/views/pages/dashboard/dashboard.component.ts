@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
 
   invoices: any = 0;
   pending: any = 0;
+  pendingCount: any = 0;
   total: any = 0;
 
 
@@ -69,8 +70,9 @@ export class DashboardComponent implements OnInit {
     }
 
     this.invoiceApiService.getStatistics().subscribe(res => {
-      this.invoices = res.count;
+      this.invoices = res.totalCount;
       this.pending = res.pending;
+      this.pendingCount = res.pendingCount;
       this.total = res.total;
     });
 

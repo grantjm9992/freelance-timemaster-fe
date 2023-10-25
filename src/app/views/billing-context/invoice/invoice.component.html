@@ -160,6 +160,39 @@
                                             </select>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td>Status</td>
+                                        <td>
+                                            <div class="mb-4">
+                                                <div class="form-check mb-2">
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="status" id="status"
+                                                        [(ngModel)]="status"
+                                                        value="PENDING"
+                                                        (ngModelChange)="updatePaymentMade()"
+                                                    >
+                                                    <label class="form-check-label" for="status">
+                                                        Pending
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input type="radio"
+                                                       class="form-check-input"
+                                                       name="status"
+                                                       id="status1"
+                                                       [(ngModel)]="status"
+                                                       value="PAID"
+                                                       (ngModelChange)="updatePaymentMade()"
+                                                    >
+                                                    <label class="form-check-label" for="status1">
+                                                        Paid
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
