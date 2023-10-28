@@ -22,6 +22,7 @@ import {NgApexchartsModule} from "ng-apexcharts";
 import {NgbDatepickerModule, NgbTimepickerModule, NgbTooltipModule} from "@ng-bootstrap/ng-bootstrap";
 import { WhosInComponent } from './whos-in/whos-in.component';
 import { AddManualCheckModalComponent } from './add-manual-check-modal/add-manual-check-modal.component';
+import { ListComponent } from './list/list.component';
 
 
 const routes: Routes = [
@@ -66,6 +67,10 @@ const routes: Routes = [
     }]
   },
   {
+    path: 'list',
+    component: ListComponent,
+  },
+  {
     path: 'report',
     component: ReportComponent,
   }
@@ -85,6 +90,7 @@ const routes: Routes = [
     ReportComponent,
     WhosInComponent,
     AddManualCheckModalComponent,
+    ListComponent,
   ],
   imports: [
     CommonModule,

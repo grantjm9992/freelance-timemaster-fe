@@ -10,6 +10,8 @@ import {CheckInModalComponent} from "../check-in-modal/check-in-modal.component"
 import {AddManualCheckModalComponent} from "../add-manual-check-modal/add-manual-check-modal.component";
 import Swal from "sweetalert2";
 import {User} from "../../../core/models/user.model";
+import {Utils} from "../../../core/services/utils";
+import {CheckService} from "../../../core/services/check.service";
 
 @Component({
   selector: 'app-personal-calendar',
@@ -38,7 +40,7 @@ export class PersonalCalendarComponent implements OnInit {
   constructor(
     private checkApiService: CheckApiService,
     private userService: UserService,
-    private modalService: NgbModal
+    private checkService: CheckService
   ) { }
 
   ngOnInit(): void {
@@ -54,46 +56,6 @@ export class PersonalCalendarComponent implements OnInit {
   }
 
   addManualCheck(): void {
-    const modalRef: NgbModalRef = this.modalService.open(AddManualCheckModalComponent, {
-      centered: true
-    });
-    modalRef.componentInstance.onSubmit = (): void => {
-      let formValue = modalRef.componentInstance.form.value;
-      let entity = {
-        date_ended: `${this.getDateString(formValue.date_start)} ${this.getTimeString(formValue.time_end)}`,
-        date_started: `${this.getDateString(formValue.date_start)} ${this.getTimeString(formValue.time_start)}`,
-        user_id: this.user.id,
-        status: 'closed',
-      };
-      this.createManualCheck(entity);
-    }
-  }
-
-  private getTimeString(timeObject: any, seconds: boolean = false): string {
-    let string = `${this.pad(timeObject.hour)}:${this.pad(timeObject.minute)}`;
-    if (seconds) {
-      string += `:${this.pad(timeObject.second)}`;
-    }
-    return string;
-  }
-
-  private getDateString(dateObject: any): string {
-    return `${dateObject.year}-${this.pad(dateObject.month)}-${this.pad(dateObject.day)}`;
-  }
-
-
-  private pad(num:number, size: number = 2): string {
-    let s = num+"";
-    while (s.length < size) s = "0" + s;
-    return s;
-  }
-  private createManualCheck(formValue: any): void {
-    this.checkApiService.create(formValue).subscribe(() => {
-      Swal.fire({
-        icon: "success",
-        title: "Success",
-        text: "Time added successfully",
-      });
-    });
+    this.checkService.addManualCheck(this.user);
   }
 }

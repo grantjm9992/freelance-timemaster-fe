@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {TaskApiService} from "../../../core/services/task.api.service";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {date} from "ngx-custom-validators/src/app/date/validator";
+import {ClientApiService} from "../../../core/services/client.api.service";
+import {ProjectApiService} from "../../../core/services/project.api.service";
 
 @Component({
   selector: 'app-add-manual-check-modal',
@@ -13,10 +15,14 @@ export class AddManualCheckModalComponent implements OnInit {
 
   public onSubmit: (eventName: string) => void;
   public tasks: any = [];
+  public clients: any = [];
+  public projects: any = [];
   public form: FormGroup;
   private formSubmitAttempt: boolean;
 
   constructor(
+    private clientApiService: ClientApiService,
+    private projectApiService: ProjectApiService,
     private taskApiService: TaskApiService,
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal
@@ -24,7 +30,10 @@ export class AddManualCheckModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      task_id: [null, Validators.required],
+      summary: ['', Validators.required],
+      client_id: [null, Validators.required],
+      project_id: null,
+      task_id: null,
       date_start: [null, Validators.required],
       time_start: [{hour: 8, minute: 0, second: 0}, Validators.required],
       date_end: [null, Validators.required],
@@ -32,16 +41,20 @@ export class AddManualCheckModalComponent implements OnInit {
     });
     this.taskApiService.getAll().subscribe(res => {
       this.tasks = res.data;
-    })
+    });
+    this.clientApiService.getAll().subscribe(res => {
+      this.clients = res.data;
+    });
+    this.projectApiService.getAll().subscribe(res => {
+      this.projects = res.data;
+    });
   }
 
   submitForm() {
     this.formSubmitAttempt = true;
-    if (this.form.valid) {
-      if (this.onSubmit) {
-        this.onSubmit(this.form.value);
-        this.activeModal.dismiss();
-      }
+    if (this.onSubmit) {
+      this.onSubmit(this.form.value);
+      this.activeModal.dismiss();
     }
   }
 

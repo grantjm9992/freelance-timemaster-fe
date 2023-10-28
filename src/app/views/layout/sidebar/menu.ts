@@ -57,26 +57,30 @@ export const MENU: MenuItem[] = [
       },
     ]
   },*/
-    /*
   {
     label: 'Time Tracking',
     isTitle: true
   },
   {
+    label: 'Entries',
+    icon: 'table',
+    link: '/time-tracking/list',
+  },
+  {
     label: 'My calendar',
     icon: 'calendar',
     link: '/time-tracking/calendar/my-calendar',
-  },
+  },/*
   {
     label: 'Team calendar',
     icon: 'calendar',
     link: '/time-tracking/calendar/company-calendar',
-  },
+  },*/
   {
     label: 'Reports',
     icon: 'bar-chart-2',
     link: '/time-tracking/report',
-  },
+  },/*
   {
     label: 'HR',
     isTitle: true

@@ -1,0 +1,36 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">Entries</a></li>
+        <li class="breadcrumb-item active" aria-current="page">List</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-title d-flex justify-content-between">
+                    Time tracked
+                    <div (click)="addManualCheck()" class="btn btn-primary" tabindex="-1" role="button">Add new time</div>
+                </h6>
+                <div class="table-responsive">
+                    <ngx-datatable
+                            class="bootstrap"
+                            [rows]="rows"
+                            (activate)="onRowClicked($event)"
+                            [loadingIndicator]="loadingIndicator"
+                            [columnMode]="ColumnMode.force"
+                            [footerHeight]="50"
+                            [limit]="10"
+                            rowHeight="auto"
+                    >
+                        <ngx-datatable-column name="Description" prop="title"></ngx-datatable-column>
+                        <ngx-datatable-column name="From" prop="start"></ngx-datatable-column>
+                        <ngx-datatable-column name="To" prop="end"></ngx-datatable-column>
+                        <ngx-datatable-column name="Client" prop="clientName"></ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
