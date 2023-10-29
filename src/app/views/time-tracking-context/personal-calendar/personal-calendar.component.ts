@@ -33,6 +33,13 @@ export class PersonalCalendarComponent implements OnInit {
         type: 'timeGrid',
         duration: { days: 1 }
       }
+    },
+    eventBackgroundColor: '#6571ff',
+    eventBorderColor: '#6571ff',
+    eventClick: (event) => {
+      let check = {...event.event.extendedProps,
+        ...{id: event.event.id}};
+      this.checkService.addManualCheck(this.user, check);
     }
   };
 

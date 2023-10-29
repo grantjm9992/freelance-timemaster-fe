@@ -29,24 +29,38 @@ export class ListComponent implements OnInit {
       private activatedRoute: ActivatedRoute,
       private userService: UserService,
       private checkService: CheckService
-  ) { }
+  ) {
+    this.checkService.successCallback = () => {
+      this.getTableData();
+    }
+  }
 
   ngOnInit(): void {
+    this.getTableData();
     this.userService.getUserEntity().subscribe(res => {
       if (res) {
         this.user = res;
       }
-    })
+    });
+  }
+
+  private getTableData(): void {
     this.apiService.getAll().subscribe((response) => {
       this.rows = response.data;
       this.loadingIndicator = false;
     });
   }
 
-  onRowClicked(event: any) {
+  onRowClicked(event: any): void {
     if (event.type === 'click') {
+      if (event.row.date_ended === null) {
+        return;
+      }
       const id = event.row.id;
-      this.router.navigate([id], { relativeTo: this.activatedRoute });
+      this.apiService.find(id).subscribe(res => {
+        const check = res.data;
+        this.checkService.addManualCheck(this.user, check);
+      });
     }
   }
 

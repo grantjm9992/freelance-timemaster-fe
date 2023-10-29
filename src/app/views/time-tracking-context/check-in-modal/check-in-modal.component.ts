@@ -3,6 +3,7 @@ import {TaskApiService} from "../../../core/services/task.api.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {retinaScale} from "chart.js/helpers";
+import {ClientApiService} from "../../../core/services/client.api.service";
 
 @Component({
   selector: 'app-check-in-modal',
@@ -12,28 +13,28 @@ import {retinaScale} from "chart.js/helpers";
 export class CheckInModalComponent implements OnInit {
 
   public onSubmit: (eventName: string) => void;
-  public tasks: any = [];
+  public clients: any = [];
   public form: FormGroup;
   private formSubmitAttempt: boolean;
 
   constructor(
-    private taskApiService: TaskApiService,
+    private clientApiService: ClientApiService,
     private formBuilder: FormBuilder,
     public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      task_id: [null, Validators.required]
+      summary: ['', Validators.required],
+      client_id: [null, Validators.required]
     });
-    this.taskApiService.getAll().subscribe(res => {
-      this.tasks = res.data;
+    this.clientApiService.getAll().subscribe(res => {
+      this.clients = res.data;
     })
   }
 
   submitForm() {
     this.formSubmitAttempt = true;
-    console.log(this.form.get('task_id')?.errors);
     if (this.form.valid) {
       if (this.onSubmit) {
         this.onSubmit(this.form.value);

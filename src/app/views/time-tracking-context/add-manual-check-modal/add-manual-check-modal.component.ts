@@ -5,6 +5,7 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {date} from "ngx-custom-validators/src/app/date/validator";
 import {ClientApiService} from "../../../core/services/client.api.service";
 import {ProjectApiService} from "../../../core/services/project.api.service";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-add-manual-check-modal',
@@ -13,7 +14,9 @@ import {ProjectApiService} from "../../../core/services/project.api.service";
 })
 export class AddManualCheckModalComponent implements OnInit {
 
+  public check: any = false;
   public onSubmit: (eventName: string) => void;
+  public onDelete: () => void;
   public tasks: any = [];
   public clients: any = [];
   public projects: any = [];
@@ -39,6 +42,10 @@ export class AddManualCheckModalComponent implements OnInit {
       date_end: [null, Validators.required],
       time_end: [{hour: 17, minute: 0, second: 0}, [Validators.required]],
     });
+    if (this.check) {
+      this.form.patchValue(this.check);
+    }
+    console.log(this.check);
     this.taskApiService.getAll().subscribe(res => {
       this.tasks = res.data;
     });
@@ -54,6 +61,13 @@ export class AddManualCheckModalComponent implements OnInit {
     this.formSubmitAttempt = true;
     if (this.onSubmit) {
       this.onSubmit(this.form.value);
+      this.activeModal.dismiss();
+    }
+  }
+
+  deleteCheck() {
+    if (this.onDelete) {
+      this.onDelete();
       this.activeModal.dismiss();
     }
   }
