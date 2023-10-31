@@ -79,7 +79,7 @@ export class ClientEditComponent implements OnInit {
     const entity: any = { ...this.entity, ...this.form.value };
     if (this.id === 'new') {
       this.apiService.create(entity).subscribe((res) => {
-        this.router.navigate([`/time-tracking/client/${res.data.id}`]);
+        this.router.navigate([`/time-tracking/client`]);
       }, error => {
         if (error.status === 'error_subscription_needed') {
           Swal.fire({
