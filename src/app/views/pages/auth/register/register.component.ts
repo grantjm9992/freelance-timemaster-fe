@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthApiService} from "../../../../core/services/auth.api.service";
 import Swal from "sweetalert2";
+import {LoadingService} from "../../../../core/services/loading.service";
 
 @Component({
   selector: 'app-register',
@@ -13,7 +14,12 @@ export class RegisterComponent implements OnInit {
 
   form: FormGroup;
   error: any[] = [];
-  constructor(private router: Router, private formBuilder: FormBuilder, private authApiService: AuthApiService) {
+  constructor(
+      private router: Router,
+      private formBuilder: FormBuilder,
+      private authApiService: AuthApiService,
+      private loadingService: LoadingService
+  ) {
     this.form = formBuilder.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
@@ -29,6 +35,7 @@ export class RegisterComponent implements OnInit {
     this.error = [];
     const value = this.form.value;
     this.authApiService.register(value).subscribe(res => {
+      this.loadingService.setLoading(false);
       Swal.fire({
         icon: 'success',
         title: 'Registration successful',

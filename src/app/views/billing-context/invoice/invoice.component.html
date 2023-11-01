@@ -206,6 +206,7 @@
                 </div>
                 <div class="container-fluid w-100">
                     <div (click)="saveInvoice()" class="btn btn-primary float-end mt-4 ms-2">Save Invoice</div>
+                    <div *ngIf="id == 'new'" (click)="saveThenDownloadInvoice()" class="btn outline-primary float-end mt-4 ms-2">Save & Download Invoice</div>
                     <div *ngIf="id !== 'new'" (click)="deleteInvoice()" class="btn btn-primary float-end mt-4 ms-2">Delete Invoice</div>
                     <div *ngIf="id !== 'new'" (click)="downloadInvoice()" class="btn btn-outline-primary float-end mt-4">Download</div>
                 </div>

@@ -3,15 +3,22 @@ import { CanActivate, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angul
 import { Router } from '@angular/router';
 import {UserService} from "../services/user.service";
 import {AuthApiService} from "../services/auth.api.service";
+import {LoadingService} from "../services/loading.service";
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private router: Router, private userService: UserService, private authApiService: AuthApiService) {}
+  constructor(
+      private router: Router,
+      private userService: UserService,
+      private authApiService: AuthApiService,
+      private loadingService: LoadingService
+  ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.userService.getUserEntity().subscribe(user => {
       if (!user) {
         this.authApiService.refresh().subscribe(res => {
+          this.loadingService.setLoading(false);
           this.userService.setUserEntity(res.user);
           this.userService.setCheck(res.check);
           localStorage.setItem('isLoggedin', 'true');

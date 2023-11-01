@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import {InvoiceApiService} from "../../../core/services/invoice.api.service";
+import {LoadingService} from "../../../core/services/loading.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -51,7 +52,8 @@ export class DashboardComponent implements OnInit {
 
   constructor(
       private calendar: NgbCalendar,
-      private invoiceApiService: InvoiceApiService
+      private invoiceApiService: InvoiceApiService,
+      private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -70,6 +72,7 @@ export class DashboardComponent implements OnInit {
     }
 
     this.invoiceApiService.getStatistics().subscribe(res => {
+      this.loadingService.setLoading(false);
       this.invoices = res.totalCount;
       this.pending = res.pending;
       this.pendingCount = res.pendingCount;

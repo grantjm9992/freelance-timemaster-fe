@@ -7,6 +7,7 @@ import {User} from "../models/user.model";
 import {Utils} from "./utils";
 import Swal from "sweetalert2";
 import {CheckApiService} from "./check.api.service";
+import {LoadingService} from "./loading.service";
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,8 @@ export class CheckService {
     constructor(
         private apiService: CheckApiService,
         private modalService: NgbModal,
-        private utils: Utils
+        private utils: Utils,
+        private loadingService: LoadingService
     ) {
     }
 
@@ -57,6 +59,7 @@ export class CheckService {
 
     private updateManualCheck(formValue: any, id: string): void {
         this.apiService.update(id, formValue).subscribe(() => {
+            this.loadingService.setLoading(false);
             Swal.fire({
                 icon: "success",
                 title: "Success",
@@ -79,6 +82,7 @@ export class CheckService {
         }).then((response) => {
             if (response.isConfirmed) {
                 this.apiService.remove(id).subscribe(() => {
+                    this.loadingService.setLoading(false);
                     if (this.successCallback) {
                         this.successCallback();
                     }
@@ -88,6 +92,7 @@ export class CheckService {
     }
     private createManualCheck(formValue: any): void {
         this.apiService.create(formValue).subscribe(() => {
+            this.loadingService.setLoading(false);
             Swal.fire({
                 icon: "success",
                 title: "Success",

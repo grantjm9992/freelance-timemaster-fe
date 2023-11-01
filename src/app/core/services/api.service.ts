@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import {environment} from "../../../environments/environment";
 import {Router} from "@angular/router";
 import Swal from "sweetalert2";
+import {LoadingService} from "./loading.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,11 @@ export class ApiService {
     })
   };
 
-  constructor(private http: HttpClient, public router: Router) {}
+  constructor(
+      private http: HttpClient,
+      public router: Router,
+      public loadingService: LoadingService
+  ) {}
 
   public formatErrors(error: any) {
     if (error.status === 401) {
@@ -70,6 +75,7 @@ export class ApiService {
   }
 
   put(path: string, body: Object = {}): Observable<any> {
+    this.loadingService.setLoading(true);
     if (localStorage.getItem('isLoggedin')) {
       let token = localStorage.getItem('token');
       this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
@@ -79,6 +85,7 @@ export class ApiService {
   }
 
   post(path: string, body: Object = {}): Observable<any> {
+    this.loadingService.setLoading(true);
     if (localStorage.getItem('isLoggedin')) {
       let token = localStorage.getItem('token');
       this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);
@@ -88,6 +95,7 @@ export class ApiService {
   }
 
   delete(path: string): Observable<any> {
+    this.loadingService.setLoading(true);
     if (localStorage.getItem('isLoggedin')) {
       let token = localStorage.getItem('token');
       this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${token}`);

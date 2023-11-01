@@ -60,4 +60,20 @@ export class Utils {
         while (s.length < size) s = "0" + s;
         return s;
     }
+
+    public getErrorMessage(error: any): string {
+        console.log(error);
+        if (error.errors) {
+            let str = '';
+            for (let key in error.errors) {
+                let _errorMessage = error.errors[key][0];
+                str += `<p>${_errorMessage}</p>`;
+            }
+            return str;
+        }
+        if (error.error) {
+            return error.error;
+        }
+        return error.status;
+    }
 }

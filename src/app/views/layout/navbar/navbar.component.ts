@@ -6,6 +6,7 @@ import {UserService} from "../../../core/services/user.service";
 import Swal from "sweetalert2";
 import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {CheckInModalComponent} from "../../time-tracking-context/check-in-modal/check-in-modal.component";
+import {LoadingService} from "../../../core/services/loading.service";
 
 @Component({
   selector: 'app-navbar',
@@ -18,12 +19,11 @@ export class NavbarComponent implements OnInit {
   counter: any = null;
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2,
     private router: Router,
     private checkApiService: CheckApiService,
     private userService: UserService,
-    private datePipe: DatePipe,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -73,6 +73,7 @@ export class NavbarComponent implements OnInit {
 
   public checkInAction(body: any): void {
     this.checkApiService.checkIn(body).subscribe(res => {
+      this.loadingService.setLoading(false);
       this.counter = 0;
       this.addCounter();
       this.userService.setCheck(res.data);
@@ -90,6 +91,7 @@ export class NavbarComponent implements OnInit {
 
   public checkOut(): void {
     this.checkApiService.checkOut().subscribe(res => {
+      this.loadingService.setLoading(false);
       this.counter = null;
       this.userService.setCheck(null);
     })

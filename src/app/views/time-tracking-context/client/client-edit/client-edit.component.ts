@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {ClientApiService} from "../../../../core/services/client.api.service";
 import {AddressApiService} from "../../../../core/services/address.api.service";
 import Swal from "sweetalert2";
+import {LoadingService} from "../../../../core/services/loading.service";
 
 @Component({
   selector: 'app-client-edit',
@@ -23,7 +24,8 @@ export class ClientEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private apiService: ClientApiService,
     private formBuilder: FormBuilder,
-    private addressApiService: AddressApiService
+    private addressApiService: AddressApiService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -58,14 +60,18 @@ export class ClientEditComponent implements OnInit {
     const entity: any = {...this.addressEntity, ...this.addressForm.value};
     if (this.addressEntity === null) {
       this.addressApiService.create(entity).subscribe(() => {
+        this.loadingService.setLoading(false);
         Swal.fire({
           icon: 'success',
           title: 'Success',
           text: 'Address updated successfully',
         });
+      }, () => {
+        this.loadingService.setLoading(false);
       });
     } else {
       this.addressApiService.update(entity.id, entity).subscribe(() => {
+        this.loadingService.setLoading(false);
         Swal.fire({
           icon: 'success',
           title: 'Success',
@@ -79,8 +85,10 @@ export class ClientEditComponent implements OnInit {
     const entity: any = { ...this.entity, ...this.form.value };
     if (this.id === 'new') {
       this.apiService.create(entity).subscribe((res) => {
+        this.loadingService.setLoading(false);
         this.router.navigate([`/time-tracking/client`]);
       }, error => {
+        this.loadingService.setLoading(false);
         if (error.status === 'error_subscription_needed') {
           Swal.fire({
             title: 'Subscription error',
@@ -114,12 +122,17 @@ export class ClientEditComponent implements OnInit {
         } else {
           this.error.push(error.message);
         }
+        this.loadingService.setLoading(false);
+      }, () => {
+        this.loadingService.setLoading(false);
       });
       return;
     }
     this.apiService.update(this.entity.id, entity).subscribe(() => {
+      this.loadingService.setLoading(false);
       this.router.navigate(['/time-tracking/client']);
     }, error => {
+      this.loadingService.setLoading(false);
       if (error.errors) {
         for (let key in error.errors) {
           error.errors[key].forEach((err: string) => {
@@ -134,6 +147,7 @@ export class ClientEditComponent implements OnInit {
 
   delete() {
     this.apiService.remove(this.entity.id).subscribe(res => {
+      this.loadingService.setLoading(false);
       this.router.navigate(['/time-tracking/client']);
     })
   }

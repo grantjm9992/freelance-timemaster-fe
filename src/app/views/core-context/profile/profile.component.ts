@@ -10,6 +10,7 @@ import {SubscriptionApiService} from "../../../core/services/subscription.api.se
 import {CompanyApiService} from "../../../core/services/company.api.service";
 import {CompanyResponse} from "../../../core/models/company.model";
 import {AddressApiService} from "../../../core/services/address.api.service";
+import {LoadingService} from "../../../core/services/loading.service";
 
 @Component({
   selector: 'app-profile',
@@ -36,7 +37,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private userApiService: UserApiService,
-    private addressApiService: AddressApiService
+    private addressApiService: AddressApiService,
+    private loadingService: LoadingService
   ) {
   }
 
@@ -71,6 +73,7 @@ export class ProfileComponent implements OnInit {
     let _updatedValues = this.formGroup.value;
     const userObject = {...this.user, ..._updatedValues};
     this.userApiService.update(this.user.id, userObject).subscribe(res => {
+      this.loadingService.setLoading(false);
       this.userService.setUserEntity(userObject);
       Swal.fire({
         icon: "success",
@@ -84,6 +87,7 @@ export class ProfileComponent implements OnInit {
     const entity: any = {...this.addressEntity, ...this.addressForm.value};
     if (!this.addressEntity) {
       this.addressApiService.create(entity).subscribe(() => {
+        this.loadingService.setLoading(false);
         this.userService.setAddress(entity);
         Swal.fire({
           icon: 'success',
@@ -93,6 +97,7 @@ export class ProfileComponent implements OnInit {
       });
     } else {
       this.addressApiService.update(entity.id, entity).subscribe(() => {
+        this.loadingService.setLoading(false);
         this.userService.setAddress(entity);
         Swal.fire({
           icon: 'success',
@@ -105,6 +110,7 @@ export class ProfileComponent implements OnInit {
 
   updatePassword(): void {
     this.userApiService.updateUserPassword(this.user.id, this.password).subscribe(res => {
+      this.loadingService.setLoading(false);
       Swal.fire({
         icon: "success",
         title: "Success",

@@ -5,6 +5,8 @@ import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "../../../core/services/user.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import Swal from "sweetalert2";
+import {LoadingService} from "../../../core/services/loading.service";
+import {Utils} from "../../../core/services/utils";
 
 @Component({
   selector: 'app-invoice',
@@ -37,7 +39,9 @@ export class InvoiceComponent implements OnInit {
       private clientApiService: ClientApiService,
       private userService: UserService,
       private activatedRoute: ActivatedRoute,
-      private router: Router
+      private router: Router,
+      private loadingService: LoadingService,
+      private utils: Utils
   ) {
     this.invoiceDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() };
     this.dueDate = { year: new Date().getFullYear(), month: new Date().getMonth() + 1, day: new Date().getDate() + 7 };
@@ -46,6 +50,15 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientApiService.getAll().subscribe((res) => {
+      if (res.data.length === 0) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'No clients found',
+          text: 'You need to add a client before generating an invoice'
+        }).then(() => {
+          this.router.navigate(['/time-tracking/client/new']);
+        });
+      }
       this.clients = res.data;
     });
     this.userService.getUserEntity().subscribe((user) => {
@@ -54,7 +67,7 @@ export class InvoiceComponent implements OnInit {
         this.userService.getAddress().subscribe((address: any) => {
           this.address = address;
           if (address !== null) {
-            this.senderAddress = `${address.address}, ${address.city}, ${address.county}, ${address.country}, ${address.postcode}`;
+            this.senderAddress = `${address.address}, ${address.city}, ${address.county}, ${address.country}, ${address?.postcode}`;
           }
         });
         this.id = this.activatedRoute.snapshot.paramMap.get('id');
@@ -156,7 +169,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   parseAddress(client: any): string {
-    return `${client.address.address}, ${client.address.city}, ${client.address.county}, ${client.address.country}, ${client.address.postcode}, ${client.tax_number}`;
+    return `${client.address.address}, ${client.address.city}, ${client.address.county}, ${client.address.country}, ${client.address.postcode}${client.tax_number ? ', '+client.tax_number : ''}`;
   }
 
   createInvoiceObject(): any {
@@ -190,17 +203,34 @@ export class InvoiceComponent implements OnInit {
   saveInvoice(): void {
     if (this.id === 'new') {
       this.invoiceApiService.create(this.createInvoiceObject()).subscribe(() => {
+        this.loadingService.setLoading(false);
         this.router.navigate(['/billing/invoice']);
+      }, (error) => {
+        this.loadingService.setLoading(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation error',
+          html: this.utils.getErrorMessage(error),
+        })
       });
     } else {
       this.invoiceApiService.update(this.id, this.createInvoiceObject()).subscribe(() => {
+        this.loadingService.setLoading(false);
         this.router.navigate(['/billing/invoice']);
+      }, (error) => {
+        this.loadingService.setLoading(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation error',
+          html: this.utils.getErrorMessage(error),
+        })
       });
     }
   }
 
   confirmDeleteInvoice(): void {
     this.invoiceApiService.remove(`${this.id}`).subscribe(() => {
+      this.loadingService.setLoading(false);
       this.router.navigate(['/billing/invoice']);
     });
   }
@@ -238,5 +268,19 @@ export class InvoiceComponent implements OnInit {
     } else {
       this.paymentMade = 0;
     }
+  }
+
+  saveThenDownloadInvoice(): void {
+    this.invoiceApiService.create(this.createInvoiceObject()).subscribe(() => {
+      this.loadingService.setLoading(false);
+      this.downloadInvoice();
+    }, (error) => {
+      this.loadingService.setLoading(false);
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation error',
+        text: error.status,
+      })
+    });
   }
 }

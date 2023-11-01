@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ProjectApiService} from "../../../../core/services/project.api.service";
 import {ClientApiService} from "../../../../core/services/client.api.service";
+import {LoadingService} from "../../../../core/services/loading.service";
 
 @Component({
   selector: 'app-project-edit',
@@ -21,7 +22,8 @@ export class ProjectEditComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private apiService: ProjectApiService,
     private formBuilder: FormBuilder,
-    private clientApiService: ClientApiService
+    private clientApiService: ClientApiService,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -46,8 +48,10 @@ export class ProjectEditComponent implements OnInit {
     const entity: any = { ...this.entity, ...this.form.value };
     if (this.id === 'new') {
       this.apiService.create(entity).subscribe(() => {
+        this.loadingService.setLoading(false);
         this.router.navigate(['/time-tracking/project']);
       }, error => {
+        this.loadingService.setLoading(false);
         if (error.errors) {
           for (let key in error.errors) {
             error.errors[key].forEach((err: string) => {
@@ -61,8 +65,10 @@ export class ProjectEditComponent implements OnInit {
       return;
     }
     this.apiService.update(this.entity.id, entity).subscribe(() => {
+      this.loadingService.setLoading(false);
       this.router.navigate(['/time-tracking/project']);
     }, error => {
+      this.loadingService.setLoading(false);
       if (error.errors) {
         for (let key in error.errors) {
           error.errors[key].forEach((err: string) => {
@@ -77,6 +83,7 @@ export class ProjectEditComponent implements OnInit {
 
   delete() {
     this.apiService.remove(this.entity.id).subscribe(res => {
+      this.loadingService.setLoading(false);
       this.router.navigate(['/time-tracking/project']);
     })
   }
