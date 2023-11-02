@@ -27,7 +27,7 @@ export class InvoiceComponent implements OnInit {
   selectedClient: string;
   invoiceDate: NgbDateStruct; // Use NgbDateStruct for ngbDatepicker
   dueDate: NgbDateStruct;
-  items: any[] = [{ description: 'Billable hours', quantity: 1, unitCost: 20 }];
+  items: any[] = [{ name: 'Billable hours', quantity: 1, unitCost: 20 }];
   user: any;
   address: any;
   selectedProject: string;
@@ -97,7 +97,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   addItem(): void {
-    this.items.push({ description: '', quantity: 1, unitCost: 0 });
+    this.items.push({ name: '', quantity: 1, unitCost: 0 });
   }
 
   removeItem(index: number): void {
